@@ -1,0 +1,28 @@
+{
+    "name": "funnyfig/swoole_timer",
+    "description": "single swoole coroutine timer",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yoo, Taihyung",
+            "email": "th.yoo@brainboot.kr"
+        }
+    ],
+    "require": {
+	    "php": ">=7.1",
+	    "ext-swoole": ">=4.4.2",
+	    "funnyfig/swoole_thread": "dev-master"
+    },
+    "autoload": {
+	    "psr-4": {
+		    "FunnyFig\\Swoole\\": "."
+	    }
+    },
+    "repositories": [
+	    {
+		    "type": "vcs",
+		    "url": "https://github.com/FunnyFig/swoole_thread"
+	    }
+    ]
+}
