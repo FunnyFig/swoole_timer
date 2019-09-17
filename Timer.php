@@ -1,7 +1,10 @@
 <?php
 
-require_once 'vendor/autoload.php';
+namespace FunnyFig\Swoole;
 
+use co;
+
+require_once 'vendor/autoload.php';
 use FunnyFig\Swoole\Thread;
 
 class Timer extends Thread {
