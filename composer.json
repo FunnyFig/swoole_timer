@@ -1,7 +1,9 @@
 {
     "name": "funnyfig/swoole_timer",
     "description": "single swoole coroutine timer",
+    "version": "1.0.0",
     "type": "library",
+    "keywords": ["swoole", "coroutine", "timer"],
     "license": "MIT",
     "authors": [
         {
@@ -10,19 +12,13 @@
         }
     ],
     "require": {
-	    "php": ">=7.1",
-	    "ext-swoole": ">=4.4.2",
-	    "funnyfig/swoole_thread": "dev-master"
+        "php": ">=7.1",
+        "ext-swoole": ">=4.4.2",
+        "funnyfig/swoole_thread": "^1.0"
     },
     "autoload": {
-	    "psr-4": {
-		    "FunnyFig\\Swoole\\": "."
-	    }
-    },
-    "repositories": [
-	    {
-		    "type": "vcs",
-		    "url": "https://github.com/FunnyFig/swoole_thread"
-	    }
-    ]
+	"psr-4": {
+            "FunnyFig\\Swoole\\": "."
+	}
+    }
 }

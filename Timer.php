@@ -11,11 +11,13 @@ class Timer extends Thread {
 	protected const STOP = 0;
 
 	protected $_next;
+	protected $_proc;
 
 	function __construct(callable $proc, int $start=0, $period=0)
 	{
 		$this->_next = $this->pacemaker($start, $period);
-		parent::__construct($proc);
+		$this->_proc = $proc;
+		parent::__construct();
 	}
 
 	function stop()
@@ -28,24 +30,21 @@ class Timer extends Thread {
 		return call_user_func($this->_next);
 	}
 
-	protected function proc(callable $proc)
+	protected function proc()
 	{
 		$ms = $this->next();
 
-		do {
-			$cmd = $this->get_cmd($ms);
-			if ($cmd !== false) {
-				break;
-			}
-
+		while ($this->get_cmd($ms)===false) {
 			try {
-				$proc();
+				($this->_proc)();
 			}
 			catch (Throwable $t) {
 			}
+
 			$ms = $this->next();
 
-		} while ($ms>0);
+			if ($ms <= 0) break;
+		}
 	}
 
 	protected function pacemaker($start, $period)
