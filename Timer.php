@@ -2,7 +2,7 @@
 
 namespace FunnyFig\Swoole;
 
-use co;
+use co, chan;
 
 require_once 'vendor/autoload.php';
 use FunnyFig\Swoole\Thread;
@@ -20,9 +20,22 @@ class Timer extends Thread {
 		parent::__construct();
 	}
 
-	function stop()
+	function stop($block=false)
 	{
-		$this->invoke(self::STOP);
+		if (!$this->is_alive()) {
+			return;
+		}
+
+		$chan = null;
+		if ($block) {
+			$chan = new chan(1);
+		}
+
+		$this->invoke(self::STOP, $chan);
+
+		if ($block) {
+			$rv = $chan->pop();
+		}
 	}
 
 	protected function next()
@@ -34,7 +47,17 @@ class Timer extends Thread {
 	{
 		$ms = $this->next();
 
-		while ($this->get_cmd($ms)===false) {
+		for (;;) {
+			$rv = $this->get_cmd($ms);
+			if ($rv !== false) {
+				list($cmd, $args) = $rv;
+				$chan = $args[0];
+				if ($chan) {
+					$chan->push(true);
+				}
+				return;
+			}
+
 			try {
 				($this->_proc)();
 			}
@@ -70,7 +93,9 @@ $t = new Timer(function () {
 
 go(function ($t) {
 	co::sleep(3);
+	//$t->stop(true);
 	$t->stop();
+	echo "Stopped\n";
 }, $t);
 
 }
